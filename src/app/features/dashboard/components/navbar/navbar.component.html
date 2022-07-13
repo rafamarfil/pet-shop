@@ -1,0 +1,42 @@
+<mat-toolbar class="toolbar">
+  <mat-toolbar-row>
+    <span fxFlex></span>
+
+    <div class="user-menu">
+      <div>
+        <button mat-button routerLink="home">
+          <mat-icon> home </mat-icon>
+          <span> Home </span>
+        </button>
+        <button mat-button [routerLink]="['pets', 'create-pet']">
+          <span> Create pet </span>
+        </button>
+        <button mat-button [routerLink]="['pets', 'list-pets']">
+          <span> List pets </span>
+        </button>
+      </div>
+      <div>
+        <button mat-button [matMenuTriggerFor]="menu">
+          <mat-icon>account_circle</mat-icon>
+          <span fxHide.lt-md>{{ username }}</span>
+          <mat-icon fxHide.lt-sm>keyboard_arrow_down</mat-icon>
+        </button>
+        <mat-menu
+          #menu="matMenu"
+          [overlapTrigger]="false"
+          xPosition="before"
+          yPosition="above"
+        >
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="onLogout()">
+            <mat-icon> exit_to_app </mat-icon>
+            <span> Logout </span>
+          </button>
+        </mat-menu>
+        <button mat-button class="settings" (click)="onFullscreenToggle()">
+          <mat-icon>fullscreen</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

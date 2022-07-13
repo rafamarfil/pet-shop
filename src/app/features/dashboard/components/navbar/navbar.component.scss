@@ -1,0 +1,33 @@
+.toolbar {
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 0px 2px 2px rgba(0, 0, 0, 0.098), 0px 0px 5px 1px rgba(0, 0, 0, 0.084);
+  background: #f6f6f6 !important;
+  color: #666 !important;
+
+  mat-toolbar-row {
+    padding-right: 0;
+    padding-left: 0;
+
+    .user-menu {
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      button {
+        height: 100%;
+        border-left: 1px solid rgba(0, 0, 0, 0.12);
+
+        span {
+          margin-left: 16px;
+        }
+      }
+    }
+
+    .settings {
+      border-left: 1px solid rgba(0, 0, 0, 0.12);
+      height: 100%;
+      min-width: 64px;
+    }
+  }
+}
