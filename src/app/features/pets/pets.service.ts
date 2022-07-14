@@ -3,13 +3,15 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { Pet } from '@features/pets/models/pet.model';
+
 @Injectable({ providedIn: 'root' })
-export class DashboardService {
+export class PetsService {
   private uri = 'http://localhost/v2';
 
   constructor(private http: HttpClient) {}
 
-  public getPets(status: string): Observable<any> {
+  public getPetsByStatus(status: string): Observable<any> {
     const URI = this.uri + '/pet/findByStatus';
 
     // const params = new HttpParams().set('status', 'available');
@@ -20,6 +22,16 @@ export class DashboardService {
       : {};
 
     return this.http.get(URI, params).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
+
+  public createPet(data: Pet) {
+    const URI = this.uri + '/pet';
+
+    return this.http.post(URI, data).pipe(
       map((response) => {
         return response;
       })
