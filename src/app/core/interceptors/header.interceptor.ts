@@ -19,6 +19,7 @@ export class HeadersInterceptor implements HttpInterceptor {
         'Content-Type': 'application/json',
       }),
     });
+
     return next.handle(httpReq);
   }
 }

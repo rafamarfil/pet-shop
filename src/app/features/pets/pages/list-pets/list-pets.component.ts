@@ -10,7 +10,7 @@ export class ListPetsComponent implements OnInit {
   constructor(private petsService: PetsService) {}
 
   ngOnInit() {
-    this.petsService.getPetsByStatus('pending').subscribe({
+    this.petsService.getPetsByStatus('available').subscribe({
       next: (response) => {
         console.log(response);
       },

@@ -71,6 +71,16 @@
             </mat-select>
           </mat-form-field>
 
+          <mat-form-field appearance="outline">
+            <mat-label>Image Url</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Insert image url"
+              formControlName="imageUrl"
+            />
+          </mat-form-field>
+
           <button
             type="submit"
             [disabled]="loader || !createPetForm.valid"
@@ -83,9 +93,25 @@
       </form>
     </div>
     <div class="createpet-content">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati impedit
-      porro odit animi suscipit modi, eum quis nulla asperiores perferendis
-      molestiae quaerat sint non adipisci voluptates magni ea a odio?
+      <h3>Image Url field</h3>
+      <p>
+        I have found an issue trying to upload an image locally, so I decided to
+        leave this field as a plaint text where you just put an image url.
+      </p>
+      <p>
+        You can fill this field with one of these urls in order to have an image
+        example:
+      </p>
+      <code>https://images.dog.ceo/breeds/weimaraner/n02092339_7224.jpg </code>
+      <hr />
+      <code
+        >https://images.dog.ceo/breeds/bulldog-boston/n02096585_9534.jpg</code
+      >
+      <hr />
+      <code>https://images.dog.ceo/breeds/weimaraner/n02092339_235.jpg</code>
+      <hr />
     </div>
   </div>
 </div>
+
+<spinner [loader]="loader"></spinner>

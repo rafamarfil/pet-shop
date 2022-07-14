@@ -1,22 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroupDirective,
-  FormGroup,
-  NgForm,
-  Validators,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
-import { Subject } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject, Observable } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { generateId } from '@core/utils/utils';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 import { PetsService } from '@features/pets/pets.service';
 import { Pet, PetTags } from '@features/pets/models/pet.model';
@@ -41,7 +31,6 @@ export class CreatePetComponent implements OnInit {
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   petTags: Tag[] = [];
   selectedValue!: string;
-
   statusValues: Status[] = [
     { value: 'available', viewValue: 'Available' },
     { value: 'pending', viewValue: 'Pending' },
@@ -51,8 +40,6 @@ export class CreatePetComponent implements OnInit {
   constructor(
     public formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
-    private route: ActivatedRoute,
-    private router: Router,
     private petsService: PetsService
   ) {}
 
@@ -61,11 +48,12 @@ export class CreatePetComponent implements OnInit {
   }
 
   createNewPet() {
+    this.loader = true;
     const newPet: Pet = {
       id: generateId(),
       category: this.getCategory(),
       name: this.createPetForm.value.name,
-      photoUrls: ['aaa', 'bbb'],
+      photoUrls: [this.createPetForm.value.imageUrl],
       tags: this.getTags(),
       status: this.createPetForm.value.status,
     };
@@ -80,6 +68,11 @@ export class CreatePetComponent implements OnInit {
       .subscribe({
         next: (response) => {
           console.log(response);
+          this.snackBar.open(`Pet created successfully`, '', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'bottom',
+          });
         },
         error: (error) => {
           console.log(error);
@@ -120,11 +113,12 @@ export class CreatePetComponent implements OnInit {
 
   private initCreatePetForm() {
     this.createPetForm = this.formBuilder.group({
-      category: ['dog', [Validators.required]],
-      name: ['Niko', [Validators.required]],
+      category: ['', [Validators.required]],
+      name: ['', [Validators.required]],
       photoUrls: [''],
       tags: [''],
       status: ['', [Validators.required]],
+      imageUrl: [''],
     });
   }
 }

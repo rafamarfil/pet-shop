@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpParams,
+  HttpEvent,
+  HttpRequest,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -28,7 +34,7 @@ export class PetsService {
     );
   }
 
-  public createPet(data: Pet) {
+  public createPet(data: Pet): Observable<any> {
     const URI = this.uri + '/pet';
 
     return this.http.post(URI, data).pipe(
