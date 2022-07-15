@@ -39,7 +39,7 @@
         <mat-list-option
           *ngFor="let pet of petsList"
           [value]="pet"
-          (click)="openPetDetails(pet)"
+          (click)="openDialog(pet)"
         >
           <div class="list-items">
             <div class="list-items--item">
@@ -54,3 +54,4 @@
     </div>
   </div>
 </div>
+<spinner [loader]="loader"></spinner>

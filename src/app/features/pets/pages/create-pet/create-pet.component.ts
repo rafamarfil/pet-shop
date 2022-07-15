@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject, Observable } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { generateId } from '@core/utils/utils';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 
-import { PetsService } from '@features/pets/pets.service';
+import { generateId } from '@core/utils/utils';
+import { PetsService } from '@features/pets/services/pets.service';
 import { Pet, PetTags } from '@features/pets/models/pet.model';
 
 interface Tag {

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'pets',
@@ -10,9 +8,7 @@ import { filter } from 'rxjs/operators';
 export class PetsComponent implements OnInit {
   order!: any;
 
-  constructor(private router: Router) {}
+  constructor() {}
 
-  ngOnInit() {
-    // this.order = this.router.getCurrentNavigation()?.extras.state;
-  }
+  ngOnInit() {}
 }

@@ -4,7 +4,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@core/guards/auth.guards';
 import { PetsComponent } from './pets.component';
 import { CreatePetComponent } from './pages/create-pet/create-pet.component';
-import { ListPetsComponent } from './pages/list-pets/list-pets.component';
+import {
+  ListPetsComponent,
+  PetDetailsDialogComponent,
+} from './pages/list-pets/list-pets.component';
 
 export const PetsRoutes: Routes = [
   {
@@ -30,5 +33,10 @@ export const PetsRoutes: Routes = [
   exports: [RouterModule],
 })
 export class PetsRoutingModule {
-  static components = [PetsComponent, CreatePetComponent, ListPetsComponent];
+  static components = [
+    PetsComponent,
+    CreatePetComponent,
+    ListPetsComponent,
+    PetDetailsDialogComponent,
+  ];
 }

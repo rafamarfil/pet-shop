@@ -1,27 +1,20 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpParams,
-  HttpEvent,
-  HttpRequest,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Pet } from '@features/pets/models/pet.model';
+import { URI_LOCALHOST, GET_PETS_BY_STATUS, CREATE_PET } from './http-const';
 
 @Injectable({ providedIn: 'root' })
 export class PetsService {
-  private uri = 'http://localhost/v2';
-
   constructor(private http: HttpClient) {}
 
   public getPetsByStatus(statusList: string[]): Observable<any> {
-    const URI = this.uri + '/pet/findByStatus';
+    const URL = URI_LOCALHOST + GET_PETS_BY_STATUS;
 
     return this.http
-      .get(URI, { params: { status: statusList.join(',') } })
+      .get(URL, { params: { status: statusList.join(',') } })
       .pipe(
         map((response) => {
           return response;
@@ -30,9 +23,9 @@ export class PetsService {
   }
 
   public createPet(data: Pet): Observable<any> {
-    const URI = this.uri + '/pet';
+    const URL = URI_LOCALHOST + CREATE_PET;
 
-    return this.http.post(URI, data).pipe(
+    return this.http.post(URL, data).pipe(
       map((response) => {
         return response;
       })

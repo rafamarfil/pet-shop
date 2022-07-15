@@ -106,9 +106,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private initForm() {
     this.form = this.formBuilder.group(
       {
-        username: ['rafa', [Validators.required]],
+        username: ['', [Validators.required]],
         email: [
-          'rafa@gmail.com',
+          '',
           [
             Validators.required,
             Validators.pattern(
@@ -117,7 +117,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           ],
         ],
         password: [
-          '78Rafalote82#',
+          '',
           [
             Validators.required,
             this.regexValidator(new RegExp('(?=.*?[0-9])'), {
@@ -137,7 +137,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             }),
           ],
         ],
-        passwordConfirmation: ['78Rafalote82#', Validators.required],
+        passwordConfirmation: ['', Validators.required],
       },
       { validator: this.checkPasswords }
     );

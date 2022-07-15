@@ -1,16 +1,16 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
-  FormControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+  MatDialog,
+  MatDialogConfig,
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { PetsService } from '@features/pets/pets.service';
+import { PetsService } from '@features/pets/services/pets.service';
 import { Pet } from '../../models/pet.model';
 
 interface Status {
@@ -52,11 +52,8 @@ export class ListPetsComponent implements OnInit {
     this.destroy$.complete();
   }
 
-  get f() {
-    return this.listPetForm.controls;
-  }
-
   listPetsByStatus() {
+    this.loader = true;
     const statusList: string[] = this.listPetForm.value.status;
 
     this.petsService
@@ -94,19 +91,31 @@ export class ListPetsComponent implements OnInit {
     });
   }
 
-  openPetDetails(pet: any) {
-    this.dialog.open(PetDetailsDialog, {
-      data: {
-        rawData: this.rawPetsData.filter((item) => item.id === pet.id)[0],
-      },
-    });
+  openDialog(pet: any) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      rawData: this.rawPetsData.filter((item) => item.id === pet.id)[0],
+    };
+
+    this.dialog.open(PetDetailsDialogComponent, dialogConfig);
   }
 }
 
 @Component({
   selector: 'pet-details-dialog',
-  templateUrl: './pet-details-dialog.html',
+  templateUrl: 'pet-details-dialog.component.html',
+  styleUrls: ['pet-details-dialog.component.scss'],
 })
-export class PetDetailsDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
+export class PetDetailsDialogComponent {
+  constructor(
+    private dialogRef: MatDialogRef<PetDetailsDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
+
+  close() {
+    this.dialogRef.close();
+  }
 }

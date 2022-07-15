@@ -1,2 +1,4 @@
 @import './app/styles/variables.scss';
 @import './app/styles/default.scss';
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

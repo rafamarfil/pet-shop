@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>Pet details</h1>
+
+<div mat-dialog-content>
+  <div class="pet-details">
+    <div class="pet-details--image">
+      <img [src]="data.rawData.photoUrls[0]" alt="" />
+    </div>
+    <div class="pet-details--field">
+      <span class="title">Category:</span>
+      <span>{{ data.rawData.category.name }}</span>
+    </div>
+    <div class="pet-details--field">
+      <span class="title">Name:</span>
+      <span>{{ data.rawData.name }}</span>
+    </div>
+    <div class="pet-details--field">
+      <span class="title">Status:</span>
+      <span>{{ data.rawData.status }}</span>
+    </div>
+    <div class="pet-details--field">
+      <span class="title">Tags:</span>
+      <span class="tag" *ngFor="let tag of data.rawData.tags">{{
+        tag.name
+      }}</span>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="close()">Close</button>
+</div>

@@ -7,24 +7,12 @@
 .login {
   width: 100%;
   overflow: hidden;
-  background-color: rgba(17, 75, 189, 0.824);
 
   .login-intro {
-      padding: 128px;
-      color: white;
-
-      .title {
-          font-size: 42px;
-          font-weight: 300;
-          line-height: 1;
-      }
-
-      .description {
-          padding-top: 16px;
-          font-size: 14px;
-          max-width: 600px;
-          color: rgba(255,255,255,.54);
-      }
+      background-image: url('../../../assets/images/pet-shop-landing-page.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
   }
 
   .login-form-wrapper {
