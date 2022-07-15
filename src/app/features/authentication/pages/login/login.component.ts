@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   message!: string;
   loader = false;
   static path = () => ['login'];
-  destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authService: AuthService,

@@ -43,7 +43,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   form!: FormGroup;
   matcher = new MyErrorStateMatcher();
   loader = false;
-  destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authService: AuthService,

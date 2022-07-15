@@ -1,0 +1,56 @@
+.listpet {
+  padding: 25px;
+
+  &-container {
+    display: flex;
+    flex-direction: row;
+    margin-left: -25px;
+    margin-right: -25px;
+    justify-content: space-between;
+  }
+
+  &-form,
+  &-content {
+    padding: 25px;
+
+    h3 {
+      margin-top: 25px;
+    }
+  }
+
+  &-form {
+    width: 450px;
+  }
+
+  &-content {
+    width: 100%;
+  }
+}
+
+form {
+  width: 100%;
+  padding-top: 32px;
+
+  mat-form-field {
+      width: 100%;
+  }
+
+  button {
+      width: 100%;
+      margin: 16px auto;
+      display: block;
+  }
+}
+
+.list-header,
+.list-items {
+  display: flex;
+  width: 450px;
+  justify-content: space-between;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.list-header--item {
+  font-size: 18px;
+}

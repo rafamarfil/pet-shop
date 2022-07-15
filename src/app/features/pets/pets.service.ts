@@ -17,21 +17,16 @@ export class PetsService {
 
   constructor(private http: HttpClient) {}
 
-  public getPetsByStatus(status: string): Observable<any> {
+  public getPetsByStatus(statusList: string[]): Observable<any> {
     const URI = this.uri + '/pet/findByStatus';
 
-    // const params = new HttpParams().set('status', 'available');
-    // const status = ['available', 'pending', 'sold'];
-
-    const params = status
-      ? { params: new HttpParams().set('status', status) }
-      : {};
-
-    return this.http.get(URI, params).pipe(
-      map((response) => {
-        return response;
-      })
-    );
+    return this.http
+      .get(URI, { params: { status: statusList.join(',') } })
+      .pipe(
+        map((response) => {
+          return response;
+        })
+      );
   }
 
   public createPet(data: Pet): Observable<any> {

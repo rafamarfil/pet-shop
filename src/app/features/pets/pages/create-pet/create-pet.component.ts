@@ -26,7 +26,6 @@ interface Status {
 export class CreatePetComponent implements OnInit {
   createPetForm!: FormGroup;
   loader = false;
-  destroy$ = new Subject<void>();
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   petTags: Tag[] = [];
@@ -36,6 +35,7 @@ export class CreatePetComponent implements OnInit {
     { value: 'pending', viewValue: 'Pending' },
     { value: 'sold', viewValue: 'Sold' },
   ];
+  private destroy$ = new Subject<void>();
 
   constructor(
     public formBuilder: FormBuilder,

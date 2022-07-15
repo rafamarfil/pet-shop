@@ -1,3 +1,56 @@
-<h1>Welcome to list pets page!!</h1>
-<img src="https://random.dog/ec6dd9a8-9251-4d6c-9c83-598dc2c9afa6.jpg" alt="" />
-<img src="https://images.dog.ceo/breeds/tervuren/maverick.JPG" alt="" />
+<div class="listpet">
+  <h2>List Pets by Status</h2>
+  <div class="listpet-container">
+    <div class="listpet-form">
+      <form [formGroup]="listPetForm" (ngSubmit)="listPetsByStatus()">
+        <mat-form-field appearance="outline">
+          <mat-label>Select pet by Status</mat-label>
+          <mat-select formControlName="status" multiple>
+            <mat-option
+              *ngFor="let status of statusList"
+              [value]="status.value"
+            >
+              {{ status.viewValue }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="listPetForm.get('status')?.hasError('required')">
+            Please select at least one status.
+          </mat-error>
+        </mat-form-field>
+
+        <button
+          type="submit"
+          [disabled]="loader || !listPetForm.valid"
+          mat-raised-button
+          color="primary"
+        >
+          GET PETS
+        </button>
+      </form>
+    </div>
+    <div class="listpet-content">
+      <h3>Selected Pets</h3>
+      <mat-selection-list #pets [multiple]="false">
+        <div class="list-header">
+          <div class="list-header--item">Name</div>
+          <div class="list-header--item">Status</div>
+        </div>
+
+        <mat-list-option
+          *ngFor="let pet of petsList"
+          [value]="pet"
+          (click)="openPetDetails(pet)"
+        >
+          <div class="list-items">
+            <div class="list-items--item">
+              {{ pet.name }}
+            </div>
+            <div class="list-items--item">
+              {{ pet.status }}
+            </div>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+  </div>
+</div>
