@@ -17,6 +17,6 @@ export class LoggedGuard implements Resolve<any> {
   }
 
   private isLogged(): boolean {
-    return localStorage.getItem('auth_tkn') ? true : false;
+    return localStorage.getItem('auth_meta') ? true : false;
   }
 }

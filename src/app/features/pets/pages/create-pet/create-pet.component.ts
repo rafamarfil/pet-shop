@@ -56,7 +56,6 @@ export class CreatePetComponent implements OnInit {
       tags: this.getTags(),
       status: this.createPetForm.value.status,
     };
-    console.log(newPet);
 
     this.petsService
       .createPet(newPet)
@@ -65,8 +64,7 @@ export class CreatePetComponent implements OnInit {
         finalize(() => (this.loader = false))
       )
       .subscribe({
-        next: (response) => {
-          console.log(response);
+        next: () => {
           this.snackBar.open(`Pet created successfully`, '', {
             duration: 3000,
             horizontalPosition: 'right',

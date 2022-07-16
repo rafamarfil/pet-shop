@@ -8,22 +8,15 @@ import {
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 
-class DecodedToken {
-  exp!: number;
-  username!: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
   private url!: string;
-  private decodedToken: any;
+  private session: any;
 
   constructor(private router: Router) {
-    this.decodedToken =
-      JSON.parse(localStorage.getItem('auth_meta') as string) ||
-      new DecodedToken();
+    this.session = JSON.parse(localStorage.getItem('auth_meta') as string);
   }
 
   canActivate(
@@ -71,7 +64,6 @@ export class AuthGuard implements CanActivate {
   }
 
   private isAuthenticated(): boolean {
-    // return moment().isBefore(moment.unix(this.decodedToken.exp));
-    return true;
+    return moment().isBefore(moment.unix(this.session.session));
   }
 }

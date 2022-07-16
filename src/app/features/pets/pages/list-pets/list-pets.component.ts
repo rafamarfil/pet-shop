@@ -68,7 +68,6 @@ export class ListPetsComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          console.log(response);
           if (response) {
             this.rawPetsData = response;
             this.parsePetsList(response);

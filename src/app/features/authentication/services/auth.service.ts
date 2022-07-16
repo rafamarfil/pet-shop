@@ -1,47 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import * as moment from 'moment';
+import { map } from 'rxjs/operators';
 
-const jwt = new JwtHelperService();
-class DecodedToken {
-  exp!: number;
-  username!: string;
-}
+import { URI_LOCALHOST, USER_LOGIN, USER_REGISTER } from './http-consts';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private uri = 'http://localhost/v2';
-  private decodedToken;
-
-  constructor(private http: HttpClient) {
-    this.decodedToken =
-      JSON.parse(localStorage.getItem('auth_meta') as string) ||
-      new DecodedToken();
-  }
+  constructor(private http: HttpClient) {}
 
   public login(userData: any): Observable<any> {
-    const URI = this.uri + '/user/login';
+    const URL = URI_LOCALHOST + USER_LOGIN;
 
-    return this.http.get(URI, { params: userData });
+    return this.http.get(URL, { params: userData }).pipe(
+      map((resp: any) => {
+        const sessionString = resp.message.replace(/[^0-9]/g, '');
+        const sessionNumber = parseInt(sessionString, 10);
+        this.saveSession({ session: sessionNumber });
+      })
+    );
   }
 
   public register(userData: any): Observable<any> {
-    const URI = this.uri + '/user';
-    return this.http.post(URI, userData);
+    const URL = URI_LOCALHOST + USER_REGISTER;
+    return this.http.post(URL, userData);
   }
 
   public logout(): void {
-    localStorage.removeItem('auth_tkn');
     localStorage.removeItem('auth_meta');
-    this.decodedToken = new DecodedToken();
   }
 
-  private saveToken(token: any): any {
-    this.decodedToken = jwt.decodeToken(token);
-    // localStorage.setItem('auth_tkn', token);
-    localStorage.setItem('auth_meta', JSON.stringify(this.decodedToken));
-    return token;
+  private saveSession(session: any): any {
+    localStorage.setItem('auth_meta', JSON.stringify(session));
   }
 }
