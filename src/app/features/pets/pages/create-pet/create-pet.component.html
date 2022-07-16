@@ -61,7 +61,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Status</mat-label>
-            <mat-select [(ngModel)]="selectedValue" formControlName="status">
+            <mat-select formControlName="status">
               <mat-option
                 *ngFor="let status of statusValues"
                 [value]="status.value"
