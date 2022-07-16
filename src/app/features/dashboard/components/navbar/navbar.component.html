@@ -18,7 +18,9 @@
       <div>
         <button mat-button [matMenuTriggerFor]="menu">
           <mat-icon>account_circle</mat-icon>
-          <span fxHide.lt-md>Admin</span>
+          <span fxHide.lt-md>{{
+            username.charAt(0).toUpperCase() + username.slice(1)
+          }}</span>
           <mat-icon fxHide.lt-sm>keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu

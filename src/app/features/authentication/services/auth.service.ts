@@ -16,7 +16,10 @@ export class AuthService {
       map((resp: any) => {
         const sessionString = resp.message.replace(/[^0-9]/g, '');
         const sessionNumber = parseInt(sessionString, 10);
-        this.saveSession({ session: sessionNumber });
+        this.saveSession({
+          session: sessionNumber,
+          username: userData.username,
+        });
       })
     );
   }
