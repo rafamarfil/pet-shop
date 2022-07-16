@@ -14,10 +14,9 @@ import * as moment from 'moment';
 export class AuthGuard implements CanActivate {
   private url!: string;
   private session: any;
+  private sessionExpires: any;
 
-  constructor(private router: Router) {
-    this.session = JSON.parse(localStorage.getItem('auth_meta') as string);
-  }
+  constructor(private router: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -47,6 +46,7 @@ export class AuthGuard implements CanActivate {
     return true;
   }
   private notAuthState(): boolean {
+    localStorage.removeItem('auth_meta');
     if (this.isLoginOrRegister()) {
       return true;
     }
@@ -64,6 +64,10 @@ export class AuthGuard implements CanActivate {
   }
 
   private isAuthenticated(): boolean {
-    return moment().isBefore(moment.unix(this.session.session));
+    // The session provided by the server is the user logged time, so here we can configure the time session,
+    // in this case, 1 hour.
+    this.session = JSON.parse(localStorage.getItem('auth_meta') as string);
+    this.sessionExpires = moment(this.session.session).add(1, 'hour');
+    return moment().isBefore(this.sessionExpires);
   }
 }
