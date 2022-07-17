@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### This project includes:
 
-- Unit tests
+- Unit testing
 - State management using Ngxs
 
 ## Development server
