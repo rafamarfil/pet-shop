@@ -69,8 +69,7 @@ export class CreatePetComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         finalize(() => {
           this.loader = false;
-          // this.createPetForm.reset();
-          // this.createPetForm.controls['name'].setErrors(null);
+          this.resetForm();
         })
       )
       .subscribe({
@@ -127,5 +126,13 @@ export class CreatePetComponent implements OnInit, OnDestroy {
       status: ['', [Validators.required]],
       imageUrl: [''],
     });
+  }
+
+  private resetForm() {
+    this.createPetForm.reset();
+    this.createPetForm.controls['category'].setErrors(null);
+    this.createPetForm.controls['name'].setErrors(null);
+    this.createPetForm.controls['status'].setErrors(null);
+    this.petTags = [];
   }
 }

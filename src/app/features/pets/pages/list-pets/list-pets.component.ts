@@ -12,7 +12,6 @@ import { finalize, takeUntil, switchMap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
 import { GetPetsByStatus } from '@state/actions/pet.action';
-import { PetsService } from '@features/pets/services/pets.service';
 import { Pet } from '../../models/pet.model';
 
 interface Status {
@@ -40,7 +39,6 @@ export class ListPetsComponent implements OnInit, OnDestroy {
     public snackBar: MatSnackBar,
     public dialog: MatDialog,
     private formBuilder: FormBuilder,
-    private petsService: PetsService,
     private store: Store
   ) {}
 
@@ -65,8 +63,7 @@ export class ListPetsComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         finalize(() => {
           this.loader = false;
-          this.listPetForm.reset();
-          this.listPetForm.controls['status'].setErrors(null);
+          this.resetForm();
         }),
         switchMap((response) => {
           if (response) {
@@ -111,6 +108,11 @@ export class ListPetsComponent implements OnInit, OnDestroy {
     };
 
     this.dialog.open(PetDetailsDialogComponent, dialogConfig);
+  }
+
+  private resetForm() {
+    this.listPetForm.reset();
+    this.listPetForm.controls['status'].setErrors(null);
   }
 }
 

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Pet } from '@features/pets/models/pet.model';
-import { URI_LOCALHOST, GET_PETS_BY_STATUS, CREATE_PET } from './http-const';
+import { URI_LOCALHOST, GET_PETS_BY_STATUS, CREATE_PET } from './http-consts';
 
 @Injectable({ providedIn: 'root' })
 export class PetsService {
