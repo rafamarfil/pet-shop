@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
 
+import { CreatePet } from '@state/actions/pet.action';
 import { generateId } from '@core/utils/utils';
-import { PetsService } from '@features/pets/services/pets.service';
 import { Pet, PetTags } from '@features/pets/models/pet.model';
 
 interface Tag {
@@ -22,7 +23,7 @@ interface Status {
   templateUrl: 'create-pet.component.html',
   styleUrls: ['create-pet.component.scss'],
 })
-export class CreatePetComponent implements OnInit {
+export class CreatePetComponent implements OnInit, OnDestroy {
   createPetForm!: FormGroup;
   loader = false;
   addOnBlur = true;
@@ -39,11 +40,16 @@ export class CreatePetComponent implements OnInit {
   constructor(
     public formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
-    private petsService: PetsService
+    private store: Store
   ) {}
 
   ngOnInit() {
     this.initCreatePetForm();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   createNewPet() {
@@ -57,11 +63,15 @@ export class CreatePetComponent implements OnInit {
       status: this.createPetForm.value.status,
     };
 
-    this.petsService
-      .createPet(newPet)
+    this.store
+      .dispatch(new CreatePet(newPet))
       .pipe(
         takeUntil(this.destroy$),
-        finalize(() => (this.loader = false))
+        finalize(() => {
+          this.loader = false;
+          // this.createPetForm.reset();
+          // this.createPetForm.controls['name'].setErrors(null);
+        })
       )
       .subscribe({
         next: () => {

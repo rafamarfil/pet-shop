@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
@@ -7,9 +7,11 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { finalize, takeUntil, switchMap } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
 
+import { GetPetsByStatus } from '@state/actions/pet.action';
 import { PetsService } from '@features/pets/services/pets.service';
 import { Pet } from '../../models/pet.model';
 
@@ -22,7 +24,7 @@ interface Status {
   templateUrl: 'list-pets.component.html',
   styleUrls: ['list-pets.component.scss'],
 })
-export class ListPetsComponent implements OnInit {
+export class ListPetsComponent implements OnInit, OnDestroy {
   loader = false;
   listPetForm: FormGroup = new FormGroup({});
   statusList: Status[] = [
@@ -31,14 +33,15 @@ export class ListPetsComponent implements OnInit {
     { value: 'sold', viewValue: 'Sold' },
   ];
   petsList: any[] = [];
-  rawPetsData!: Pet[];
+  rawPetsData!: any;
   private destroy$ = new Subject<void>();
 
   constructor(
-    private formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
+    public dialog: MatDialog,
+    private formBuilder: FormBuilder,
     private petsService: PetsService,
-    public dialog: MatDialog
+    private store: Store
   ) {}
 
   ngOnInit() {
@@ -56,21 +59,28 @@ export class ListPetsComponent implements OnInit {
     this.loader = true;
     const statusList: string[] = this.listPetForm.value.status;
 
-    this.petsService
-      .getPetsByStatus(statusList)
+    this.store
+      .dispatch(new GetPetsByStatus(statusList))
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => {
           this.loader = false;
           this.listPetForm.reset();
           this.listPetForm.controls['status'].setErrors(null);
+        }),
+        switchMap((response) => {
+          if (response) {
+            return this.store.select((state) => state.pets.pets);
+          } else {
+            return of(null);
+          }
         })
       )
       .subscribe({
-        next: (response) => {
-          if (response) {
-            this.rawPetsData = response;
-            this.parsePetsList(response);
+        next: (data) => {
+          if (data) {
+            this.rawPetsData = data;
+            this.parsePetsList(this.rawPetsData);
           }
         },
         error: (error) => {
@@ -79,9 +89,10 @@ export class ListPetsComponent implements OnInit {
       });
   }
 
-  parsePetsList(pets: Pet[]) {
+  parsePetsList(pets: any) {
     this.petsList = [];
-    pets.forEach((item) => {
+
+    pets.forEach((item: any) => {
       this.petsList.push({
         id: item.id,
         name: item.name,
@@ -96,7 +107,7 @@ export class ListPetsComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
-      rawData: this.rawPetsData.filter((item) => item.id === pet.id)[0],
+      rawData: this.rawPetsData.filter((item: Pet) => item.id === pet.id)[0],
     };
 
     this.dialog.open(PetDetailsDialogComponent, dialogConfig);

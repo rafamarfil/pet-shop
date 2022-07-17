@@ -10,16 +10,14 @@ import { URI_LOCALHOST, GET_PETS_BY_STATUS, CREATE_PET } from './http-const';
 export class PetsService {
   constructor(private http: HttpClient) {}
 
-  public getPetsByStatus(statusList: string[]): Observable<any> {
+  public getPetsByStatus(params: string[]): Observable<any> {
     const URL = URI_LOCALHOST + GET_PETS_BY_STATUS;
 
-    return this.http
-      .get(URL, { params: { status: statusList.join(',') } })
-      .pipe(
-        map((response) => {
-          return response;
-        })
-      );
+    return this.http.get(URL, { params: { status: params.join(',') } }).pipe(
+      map((response) => {
+        return response;
+      })
+    );
   }
 
   public createPet(data: Pet): Observable<any> {
