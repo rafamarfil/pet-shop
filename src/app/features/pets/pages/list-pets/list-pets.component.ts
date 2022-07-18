@@ -14,6 +14,7 @@ import { Store } from '@ngxs/store';
 import { GetPetsByStatus } from '@state/actions/pet.action';
 import { Pet } from '../../models/pet.model';
 
+
 interface Status {
   value: string;
   viewValue: string;
